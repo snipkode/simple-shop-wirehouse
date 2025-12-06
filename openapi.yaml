@@ -1,0 +1,362 @@
+openapi: 3.0.1
+info:
+  title: Simple Shop Warehouse API
+  description: API Documentation buat Simple Shop Warehouse Management System
+  version: 1.0.0
+  contact:
+    name: Development Team
+    email: dev@example.com
+servers:
+  - url: http://localhost:8080/api/warehouse
+    description: Development server
+paths:
+  /items:
+    post:
+      summary: Bikin item baru
+      description: Endpoint buat bikin item baru ama variants-nya
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemRequest'
+      responses:
+        '201':
+          description: Item berhasil dibikin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+    get:
+      summary: Get semua item
+      description: Endpoint buat get semua item yang aktif
+      responses:
+        '200':
+          description: Berhasil get semua item
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemResponse'
+  /items/{id}:
+    get:
+      summary: Get item berdasarkan ID
+      description: Endpoint buat get item berdasarkan ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID item yang dicari
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Berhasil get item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+    put:
+      summary: Update item
+      description: Endpoint buat update item berdasarkan ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID item yang mau diupdate
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemRequest'
+      responses:
+        '200':
+          description: Item berhasil diupdate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+    delete:
+      summary: Hapus item
+      description: Endpoint buat soft delete item berdasarkan ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID item yang mau dihapus
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Item berhasil dihapus
+  /items/{itemId}/variants:
+    post:
+      summary: Bikin variant buat item
+      description: Endpoint buat bikin variant baru buat item tertentu
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          description: ID item yang mau ditambahin variant
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariantRequest'
+      responses:
+        '201':
+          description: Variant berhasil dibikin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantResponse'
+    get:
+      summary: Get semua variant dari item
+      description: Endpoint buat get semua variant dari item tertentu
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          description: ID item yang mau diambil variants-nya
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Berhasil get semua variant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VariantResponse'
+  /stocks/{variantId}:
+    put:
+      summary: Update stock
+      description: Endpoint buat update jumlah stock buat variant tertentu
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          description: ID variant yang stock-nya mau diupdate
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockRequest'
+      responses:
+        '200':
+          description: Stock berhasil diupdate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockResponse'
+    get:
+      summary: Get stock berdasarkan variant
+      description: Endpoint buat get jumlah stock dari variant tertentu
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          description: ID variant yang mau diambil stock-nya
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Berhasil get stock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockResponse'
+  /stocks/{variantId}/reserve:
+    post:
+      summary: Reservasi stock
+      description: Endpoint buat reservasi stock buat dicegah dijual ke orang lain
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          description: ID variant yang stock-nya mau di-reserve
+          schema:
+            type: integer
+        - name: quantity
+          in: query
+          required: true
+          description: Jumlah stock yang mau di-reserve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Stock berhasil di-reserve
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /stocks/{variantId}/quantity:
+    put:
+      summary: Update jumlah stock
+      description: Endpoint buat update jumlah stock (restock ato kurangin barang)
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          description: ID variant yang jumlah stock-nya mau diupdate
+          schema:
+            type: integer
+        - name: quantityChange
+          in: query
+          required: true
+          description: Perubahan jumlah stock (positif buat restock, negatif buat kurangin)
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Jumlah stock berhasil diupdate
+          content:
+            application/json:
+              schema:
+                type: boolean
+components:
+  schemas:
+    ItemRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nama item
+        description:
+          type: string
+          description: Deskripsi item
+        category:
+          type: string
+          description: Kategori item (misal: baju, celana, etc)
+        active:
+          type: boolean
+          description: Status aktif item
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariantRequest'
+          description: List variant buat item ini
+    ItemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID item
+        name:
+          type: string
+          description: Nama item
+        description:
+          type: string
+          description: Deskripsi item
+        category:
+          type: string
+          description: Kategori item
+        active:
+          type: boolean
+          description: Status aktif item
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+          description: List variant dari item ini
+    VariantRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nama variant (misal: Merah, XL, dll)
+        price:
+          type: number
+          format: double
+          description: Harga variant
+        initialStock:
+          type: integer
+          description: Jumlah stock awal
+        active:
+          type: boolean
+          description: Status aktif variant
+    VariantResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID variant
+        name:
+          type: string
+          description: Nama variant
+        price:
+          type: number
+          format: double
+          description: Harga variant
+        active:
+          type: boolean
+          description: Status aktif variant
+        stock:
+          $ref: '#/components/schemas/Stock'
+    Variant:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID variant
+        name:
+          type: string
+          description: Nama variant
+        price:
+          type: number
+          format: double
+          description: Harga variant
+        active:
+          type: boolean
+          description: Status aktif variant
+        stock:
+          $ref: '#/components/schemas/Stock'
+    StockRequest:
+      type: object
+      properties:
+        variantId:
+          type: integer
+          description: ID variant
+        quantity:
+          type: integer
+          description: Jumlah stock
+    StockResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID stock
+        variantId:
+          type: integer
+          description: ID variant
+        quantity:
+          type: integer
+          description: Jumlah stock
+        reserved:
+          type: boolean
+          description: Status reserved stock
+    Stock:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID stock
+        variant:
+          $ref: '#/components/schemas/Variant'
+        quantity:
+          type: integer
+          description: Jumlah stock
+        reserved:
+          type: boolean
+          description: Status reserved stock
