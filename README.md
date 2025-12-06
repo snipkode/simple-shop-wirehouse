@@ -139,6 +139,11 @@ mvn test
 ## POSTMAN COLLECTION
 - Included Postman JSON Collection **SimpleShopWarehouse.postman_collection** ready to import to quick Test
 
+## BUILD JAR OUTPUT API EMMBEDDED TOMCAT SERVER (Standalone Application)
+- Gunakan Perintah pada terminal:
+- Windows ```shell .\mvnw.cmd clean package -DskipTests ``` atau ```shell mvn clean package -DskipTests ```
+
+
 
 ## NEXT DEVELOPMENT
 - Integration microservices with Containerization Docker 
