@@ -42,7 +42,7 @@ src/main/java/com/example/simpleshop/
 
 # Cara Menjalankan Project
 
-### Karena ingin minim konfigurasi manual, sy menggunakan IDE Eclips :
+### Automatic Configurations, Gunakan IDE Eclips :
 - Buka IDE Eclips
 - Kemudian Import Projects
 ---
@@ -51,7 +51,7 @@ src/main/java/com/example/simpleshop/
 ---
 - Buat Profile Goal Isikan value : **spring-boot:run** kemudian klik save dan jalankan.
 
-### Lain Menggunakan Command Line di Visual Studio Code :
+### Opsi Lain Menggunakan Command Line di Visual Studio Code :
 - Download IDE Visual Studio Code
 - Download dulu Installer Java JDK versi 17 (Wajib)
 - Download Maven Binary
