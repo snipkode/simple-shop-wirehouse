@@ -142,6 +142,7 @@ mvn test
 ## BUILD JAR OUTPUT API EMMBEDDED TOMCAT SERVER (Standalone Application)
 - Gunakan Perintah pada terminal:
 - Windows ```shell .\mvnw.cmd clean package -DskipTests ``` atau ```shell mvn clean package -DskipTests ```
+- Buka Binary File di root dir jalankan perintah ```java -jar simpleshop-0.0.1-SNAPSHOT.jar```
 
 
 
