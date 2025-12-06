@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "de636e48-d2ad-4ac9-888f-7d1fc864722b",
+		"name": "SimpleShopWarehouse",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13832724",
+		"_collection_link": "https://e-compfast.postman.co/workspace/0a011b2b-b1e0-4d40-bf70-8a5dab6fa3ef/collection/13832724-de636e48-d2ad-4ac9-888f-7d1fc864722b?action=share&source=collection_link&creator=13832724"
+	},
+	"item": [
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Create Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Laptop\",\r\n    \"description\": \"Laptop performa tinggi\",\r\n    \"category\": \"Elektronik\",\r\n    \"active\": true,\r\n    \"variants\": [\r\n        {\r\n            \"name\": \"i7/16GB RAM\",\r\n            \"price\": 1200.00,\r\n            \"initialStock\": 10,\r\n            \"active\": true\r\n        },\r\n        {\r\n            \"name\": \"i5/8GB RAM\",\r\n            \"price\": 800.00,\r\n            \"initialStock\": 15,\r\n            \"active\": true\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/warehouse/items",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"warehouse",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/warehouse/items",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"warehouse",
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Variants",
+			"item": []
+		},
+		{
+			"name": "Stock",
+			"item": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
