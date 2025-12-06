@@ -135,3 +135,13 @@ Test unit ama integration udah dimasukin buat verifikasi core functionality. Jal
 ```bash
 mvn test
 ```
+
+## POSTMAN COLLECTION
+- Included Postman JSON Collection **SimpleShopWarehouse.postman_collection** ready to import to quick Test
+
+
+## NEXT DEVELOPMENT
+- Integration microservices with Containerization Docker 
+- Swagger Implementation 
+- AI Integration to create Fraud Detection.
+- CI/CD Integration Hooks with Github Runner or Jenkins

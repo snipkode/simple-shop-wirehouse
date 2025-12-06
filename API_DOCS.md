@@ -166,6 +166,10 @@ Format response error:
 }
 ```
 
+
+## POSTMAN COLLECTION
+- Included Postman JSON Collection **SimpleShopWarehouse.postman_collection** ready to import to quick Test
+
 ## Database
 
 Aplikasi make database H2 in-memory yang udah di-config otomatis. Schema dibikin pas startup.
