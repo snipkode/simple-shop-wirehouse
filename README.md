@@ -84,6 +84,7 @@ Documentation API ada di: [API Documentation](API_DOCS.md)
 - Method stock reservation buat gak ada race condition pas checkout
 - Validation biar jumlah stock gak minus
 - Endpoint sendiri buat adjust stock
+- Endpoint Spesifik buat update harga
 
 ### 5. Error Handling
 - Custom exception class buat error business logic
