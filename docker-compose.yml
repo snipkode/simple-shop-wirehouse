@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # SimpleShop application
+  simpleshop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/simpleshop
+      - SPRING_DATASOURCE_USERNAME=simpleshop_user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - postgres
+    networks:
+      - simpleshop-network
+
+  # PostgreSQL database
+  postgres:
+    image: postgres:15-alpine
+    container_name: simpleshop-postgres
+    environment:
+      POSTGRES_DB: simpleshop
+      POSTGRES_USER: simpleshop_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - simpleshop-network
+
+  # Optional: pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: simpleshop-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@simpleshop.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - simpleshop-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  simpleshop-network:
+    driver: bridge
