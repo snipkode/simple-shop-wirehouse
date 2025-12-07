@@ -8,6 +8,7 @@ import com.wirehouse.simpleshop.repository.ItemRepository;
 import com.wirehouse.simpleshop.repository.VariantRepository;
 import com.wirehouse.simpleshop.repository.StockRepository;
 import com.wirehouse.simpleshop.exception.ItemNotFoundException;
+import com.wirehouse.simpleshop.helpers.WarehouseHelper;
 import com.wirehouse.simpleshop.exception.InsufficientStockException;
 import lombok.RequiredArgsConstructor;
 
@@ -74,7 +75,7 @@ public class WarehouseService {
 
         // Ambil lagi item + variants-nya (buat nampilin di response yang lengkap)
         item = itemRepository.findByIdWithVariants(item.getId()).orElseThrow();
-        return toItemResponse(item);
+        return WarehouseHelper.toItemResponse(item);
     }
 
     /**
@@ -83,7 +84,7 @@ public class WarehouseService {
      */
     public List<ItemResponse> getAllItems() {
         return itemRepository.findAllActiveWithVariants().stream()
-                .map(this::toItemResponse)
+                .map(WarehouseHelper::toItemResponse)
                 .collect(Collectors.toList());
     }
 
@@ -96,7 +97,7 @@ public class WarehouseService {
     public ItemResponse getItemById(Long id) {
         Item item = itemRepository.findByIdWithVariants(id).orElseThrow(() ->
                 new ItemNotFoundException("Item gak ketemu id: " + id));
-        return toItemResponse(item);
+        return WarehouseHelper.toItemResponse(item);
     }
 
     @Transactional
@@ -152,7 +153,7 @@ public class WarehouseService {
 
         // Fetch the updated item with its variants
         item = itemRepository.findByIdWithVariants(item.getId()).orElseThrow();
-        return toItemResponse(item);
+        return WarehouseHelper.toItemResponse(item);
     }
 
     @Transactional
@@ -190,13 +191,13 @@ public class WarehouseService {
             stockRepository.save(stock);
         }
 
-        return toVariantResponse(variant);
+        return WarehouseHelper.toVariantResponse(variant);
     }
 
     public List<VariantResponse> getVariantsByItem(Long itemId) {
         List<Variant> variants = variantRepository.findByItemIdAndActiveTrue(itemId);
         return variants.stream()
-                .map(this::toVariantResponse)
+                .map(WarehouseHelper::toVariantResponse)
                 .collect(Collectors.toList());
     }
 
@@ -218,7 +219,7 @@ public class WarehouseService {
         }
 
         stock = stockRepository.save(stock);
-        return toStockResponse(stock);
+        return WarehouseHelper.toStockResponse(stock);
     }
 
     public StockResponse getStockByVariant(Long variantId) {
@@ -226,7 +227,7 @@ public class WarehouseService {
         if (stock == null) {
             throw new ItemNotFoundException("Stock not found for variant id: " + variantId);
         }
-        return toStockResponse(stock);
+        return WarehouseHelper.toStockResponse(stock);
     }
 
     /**
@@ -284,41 +285,8 @@ public class WarehouseService {
             new ItemNotFoundException("Variant tidak ditemukan dengan id :" + variantId));
         variant.setPrice(updatePriceRequest.getPrice());
         variant = variantRepository.save(variant);
-        return toVariantResponse(variant);
+        return WarehouseHelper.toVariantResponse(variant);
     }
 
-    private ItemResponse toItemResponse(Item item) {
-        ItemResponse response = new ItemResponse();
-        response.setId(item.getId());
-        response.setName(item.getName());
-        response.setDescription(item.getDescription());
-        response.setCategory(item.getCategory());
-        response.setActive(item.getActive());
-        response.setVariants(item.getVariants());
-        return response;
-    }
-
-    private VariantResponse toVariantResponse(Variant variant) {
-        VariantResponse response = new VariantResponse();
-        response.setId(variant.getId());
-        response.setName(variant.getName());
-        response.setPrice(variant.getPrice());
-        response.setActive(variant.getActive());
-        
-        Stock stock = stockRepository.findByVariantId(variant.getId());
-        if (stock != null) {
-            response.setStock(stock);
-        }
-        
-        return response;
-    }
-
-    private StockResponse toStockResponse(Stock stock) {
-        StockResponse response = new StockResponse();
-        response.setId(stock.getId());
-        response.setVariantId(stock.getVariant().getId());
-        response.setQuantity(stock.getQuantity());
-        response.setReserved(stock.getReserved());
-        return response;
-    }
+ 
 }
