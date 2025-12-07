@@ -191,13 +191,13 @@ public class WarehouseService {
             stockRepository.save(stock);
         }
 
-        return WarehouseHelper.toVariantResponse(variant);
+        return toVariantResponse(variant);
     }
 
     public List<VariantResponse> getVariantsByItem(Long itemId) {
         List<Variant> variants = variantRepository.findByItemIdAndActiveTrue(itemId);
         return variants.stream()
-                .map(WarehouseHelper::toVariantResponse)
+                .map(this::toVariantResponse)
                 .collect(Collectors.toList());
     }
 
@@ -285,8 +285,21 @@ public class WarehouseService {
             new ItemNotFoundException("Variant tidak ditemukan dengan id :" + variantId));
         variant.setPrice(updatePriceRequest.getPrice());
         variant = variantRepository.save(variant);
-        return WarehouseHelper.toVariantResponse(variant);
+        return toVariantResponse(variant);
     }
 
- 
+    private VariantResponse toVariantResponse(Variant variant) {
+        VariantResponse response = new VariantResponse();
+        response.setId(variant.getId());
+        response.setName(variant.getName());
+        response.setPrice(variant.getPrice());
+        response.setActive(variant.getActive());
+        
+        Stock stock = stockRepository.findByVariantId(variant.getId());
+        if (stock != null) {
+            response.setStock(stock);
+        }
+        
+        return response;
+    }
 }
