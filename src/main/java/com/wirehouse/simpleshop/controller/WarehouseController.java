@@ -85,4 +85,12 @@ public class WarehouseController {
         Boolean success = warehouseService.updateStockQuantity(variantId, quantityChange);
         return new ResponseEntity<>(ApiResponse.success(success), HttpStatus.OK);
     }
+
+    @PutMapping("/variants/{variantId}/price")
+    public ResponseEntity<ApiResponse<VariantResponse>> updateVariantPrice(
+        @PathVariable Long variantId,
+        @RequestBody UpdatePriceRequest updatePriceRequest){
+        VariantResponse response = warehouseService.updateVariantPrice(variantId, updatePriceRequest);
+        return new ResponseEntity<>(ApiResponse.success(response), HttpStatus.OK);
+    }
 }

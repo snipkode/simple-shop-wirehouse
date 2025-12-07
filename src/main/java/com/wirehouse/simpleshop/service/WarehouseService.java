@@ -278,6 +278,15 @@ public class WarehouseService {
         return true;
     }
 
+    @Transactional
+    public VariantResponse updateVariantPrice(Long variantId, UpdatePriceRequest updatePriceRequest){
+        Variant variant = variantRepository.findById(variantId).orElseThrow(() -> 
+            new ItemNotFoundException("Variant tidak ditemukan dengan id :" + variantId));
+        variant.setPrice(updatePriceRequest.getPrice());
+        variant = variantRepository.save(variant);
+        return toVariantResponse(variant);
+    }
+
     private ItemResponse toItemResponse(Item item) {
         ItemResponse response = new ItemResponse();
         response.setId(item.getId());
