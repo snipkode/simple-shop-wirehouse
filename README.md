@@ -62,7 +62,7 @@ Kalo make IDE:
 
 ## API Documentation
 
-Documentation API ada di: [API Documentation](API_DOCUMENTATION.md)
+Documentation API ada di: [API Documentation](API_DOCS.md)
 
 ## Design Decisions
 
