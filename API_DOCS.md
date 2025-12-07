@@ -104,6 +104,19 @@ Gak perlu authentication buat implementasi basic ini.
 - **PUT** `/api/warehouse/stocks/{variantId}/quantity?quantityChange=10`
 - **Response**: `200 OK` - Boolean yang nunjukin success
 
+### Variants
+
+#### Update Harga Variant
+- **PUT** `/api/warehouse/variants/{variantId}/price`
+- **Content-Type**: `application/json`
+- **Body**:
+  ```json
+  {
+    "price": 25.99
+  }
+  ```
+- **Response**: `200 OK` - VariantResponse object
+
 ## Contoh Penggunaan
 
 ### 1. Bikin item ama variants
